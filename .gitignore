@@ -6,6 +6,6 @@ ENV/
 env.bak/
 venv.bak/
 **/_pycache_/
-**/_pycache_/**\
+**/_pycache_/**
 /pycache/*
 __pycache__/
