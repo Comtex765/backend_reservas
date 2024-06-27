@@ -3,7 +3,7 @@ from sqlalchemy.orm import Session
 import api.models as models
 import api.schemas as schemas
 from api.crud import crud_usuario
-from api.email import email_sender_create
+from api.email import sender_create
 
 from api.database import get_db
 
@@ -23,7 +23,7 @@ def create_usuario(usuario: schemas.UsuarioCreate, db: Session = Depends(get_db)
 
     user = crud_usuario.create_usuario(db=db, usuario=usuario)
     if user is not None:
-        email_sender_create.enviar_correo(
+        sender_create.enviar_correo(
             email_receiver=user.correo, nombre_usuario=user.usuario
         )
     return user
