@@ -1,6 +1,6 @@
 from sqlalchemy.orm import Session
 from api.models import Laboratorio
-from api import  schemas
+from api import schemas
 
 
 def get_laboratorios(db: Session):
