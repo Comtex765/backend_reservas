@@ -14,6 +14,28 @@ from sqlalchemy.orm import relationship, sessionmaker
 Base = declarative_base()
 
 
+class Usuario(Base):
+    __tablename__ = "usuarios"
+
+    id_usuario = Column(Integer, primary_key=True, index=True)
+    id_tipo = Column(Integer, ForeignKey("tipo_usuario.id_tipo"), nullable=False)
+    nombre = Column(String, nullable=False)
+    apellido = Column(String, nullable=False)
+    correo = Column(String, nullable=False, unique=True)
+    usuario = Column(String, nullable=False, unique=True)
+    contrasena = Column(String, nullable=False)
+    celular = Column(String(10), nullable=True)
+
+    tipo_usuario = relationship("TipoUsuario", back_populates="usuarios")
+
+class TipoUsuario(Base):
+    __tablename__ = "tipo_usuario"
+
+    id_tipo = Column(Integer, primary_key=True, index=True)
+    tipo = Column(String, nullable=False, unique=True)
+
+    usuarios = relationship("Usuario", back_populates="tipo_usuario")
+
 class EstadoReserva(Base):
     __tablename__ = "estado_reserva"
     id_estado = Column(
@@ -61,24 +83,6 @@ class Reserva(Base):
     estado_reserva = relationship("EstadoReserva")
 
 
-class TipoUsuario(Base):
-    __tablename__ = "tipo_usuario"
-    id_tipo = Column(Integer, Sequence("tipo_usuario_id_tipo_seq"), primary_key=True)
-    tipo = Column(String(100))
-
-
-class Usuario(Base):
-    __tablename__ = "usuarios"
-    id_usuario = Column(Integer, Sequence("usuarios_id_usuario_seq"), primary_key=True)
-    id_tipo = Column(Integer, ForeignKey("tipo_usuario.id_tipo"))
-    nombre = Column(String(50))
-    apellido = Column(String(50))
-    correo = Column(String(100))
-    usuario = Column(String(100))
-    contrasena = Column(String(200))
-    celular = Column(String(10))
-
-    tipo_usuario = relationship("TipoUsuario")
 
 
 # Configuración de la base de datos
@@ -86,6 +90,3 @@ DATABASE_URL = "postgresql://username:password@localhost:5432/mydatabase"
 engine = create_engine(DATABASE_URL)
 Session = sessionmaker(bind=engine)
 session = Session()
-
-# Creación de las tablas
-Base.metadata.create_all(engine)

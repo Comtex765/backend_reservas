@@ -57,4 +57,4 @@ def test_db_connection():
         )
 
 
-# test_db_connection()
+test_db_connection()

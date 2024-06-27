@@ -1,27 +1,28 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, EmailStr
 
 
 class UsuarioBase(BaseModel):
     nombre: str
     apellido: str
-    correo: str
+    correo: EmailStr
     usuario: str
-    telefono: str
-
+    celular: str
 
 class UsuarioCreate(UsuarioBase):
-    contraseña: str
+    id_tipo: int
+    contrasena: str
+
 
 
 class UsuarioUpdate(UsuarioBase):
-    contraseña: str
-
+    contrasena: str
 
 class Usuario(UsuarioBase):
-    id: int
+    id_usuario: int
+    id_tipo: int
 
     class Config:
-        from_attributes = True
+        orm_mode = True
 
 
 class Token(BaseModel):
