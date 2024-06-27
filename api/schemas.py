@@ -58,6 +58,7 @@ class LoginRequest(BaseModel):
     usuario: str
     contrasena: str
 
+
 class ReservaBase(BaseModel):
     id_usuario: int
     id_laboratorio: int
@@ -66,8 +67,10 @@ class ReservaBase(BaseModel):
     hora_inicio: time
     hora_fin: time
 
+
 class ReservaCreate(ReservaBase):
     pass
+
 
 class ReservaUpdate(BaseModel):
     id_usuario: Optional[int]
@@ -77,8 +80,33 @@ class ReservaUpdate(BaseModel):
     hora_inicio: Optional[time]
     hora_fin: Optional[time]
 
+
 class Reserva(ReservaBase):
     id_reserva: int
 
+
+class Config:
+    from_attributes = True
+
+
+class HistorialBase(BaseModel):
+    id_reserva: int
+    id_usuario: int
+    id_laboratorio: int
+
+
+class HistorialCreate(HistorialBase):
+    pass
+
+
+class HistorialUpdate(BaseModel):
+    id_reserva: Optional[int]
+    id_usuario: Optional[int]
+    id_laboratorio: Optional[int]
+
+
+class Historial(HistorialBase):
+    id_historial: int
+
     class Config:
-        orm_mode = True
+        from_attributes = True
