@@ -1,4 +1,6 @@
 from pydantic import BaseModel, EmailStr
+from typing import Optional
+from datetime import date, time
 
 
 class UsuarioBase(BaseModel):
@@ -55,3 +57,28 @@ class Laboratorio(LaboratorioBase):
 class LoginRequest(BaseModel):
     usuario: str
     contrasena: str
+
+class ReservaBase(BaseModel):
+    id_usuario: int
+    id_laboratorio: int
+    id_estado: int
+    fecha: date
+    hora_inicio: time
+    hora_fin: time
+
+class ReservaCreate(ReservaBase):
+    pass
+
+class ReservaUpdate(BaseModel):
+    id_usuario: Optional[int]
+    id_laboratorio: Optional[int]
+    id_estado: Optional[int]
+    fecha: Optional[date]
+    hora_inicio: Optional[time]
+    hora_fin: Optional[time]
+
+class Reserva(ReservaBase):
+    id_reserva: int
+
+    class Config:
+        orm_mode = True
