@@ -1,8 +1,8 @@
-from fastapi import FastAPI, Depends, HTTPException
+from fastapi import FastAPI, Depends, HTTPException, status
+from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 from dotenv import load_dotenv
 from sqlalchemy.orm import Session
-from . import models
-from . import schemas
+from . import models, schemas, jwt_utils
 from api.crud import crud_usuario, crud_laboratorio
 from .database import get_db
 
@@ -15,6 +15,31 @@ app = FastAPI()
 @app.get("/")
 def route():
     return {"success": "True"}
+
+# OAuth2 esquema de seguridad
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
+
+# Ruta para obtener el token JWT
+@app.post("/token")
+def login_for_access_token(form_data: OAuth2PasswordRequestForm = Depends(), db: Session = Depends(get_db)):
+    usuario = crud_usuario.authenticate_usuario(db, form_data.username, form_data.password)
+    if not usuario:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Invalid username or password",
+            headers={"WWW-Authenticate": "Bearer"},
+        )
+    access_token = jwt_utils.create_access_token(data={"sub": usuario.usuario})
+    return {"access_token": access_token}
+
+@app.get("/usuarios/me", response_model=schemas.Usuario)
+def read_current_user(token: str = Depends(oauth2_scheme), db: Session = Depends(get_db)):
+    payload = jwt_utils.verify_token(token)
+    usuario_id = payload.get("sub")
+    usuario = crud_usuario.get_usuario_by_username(db, usuario_id)
+    if usuario is None:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="User not found")
+    return usuario
 
 @app.post("/usuarios/", response_model=schemas.Usuario)
 def create_usuario(usuario: schemas.UsuarioCreate, db: Session = Depends(get_db)):

@@ -1,6 +1,7 @@
 from api.models import Usuario
 from sqlalchemy.orm import Session
 from api.schemas import UsuarioCreate, UsuarioUpdate
+from api.jwt_utils import verify_password, get_password_hash
 
 def get_usuario(db: Session, usuario_id: int):
     return db.query(Usuario).filter(Usuario.id_usuario == usuario_id).first()
@@ -12,14 +13,15 @@ def get_usuarios(db: Session):
     return db.query(Usuario).all()
 
 def create_usuario(db: Session, usuario: UsuarioCreate):
+    hashed_password = get_password_hash(usuario.contraseña)
     db_usuario = Usuario(
-        id_tipo=usuario.id_tipo,
         nombre=usuario.nombre,
         apellido=usuario.apellido,
         correo=usuario.correo,
         usuario=usuario.usuario,
-        contrasena=usuario.contrasena,
-        celular=usuario.celular
+        contraseña=hashed_password,
+        celular=usuario.celular,
+        id_tipo=usuario.id_tipo
     )
     db.add(db_usuario)
     db.commit()
@@ -41,3 +43,11 @@ def delete_usuario(db: Session, usuario_id: int):
         db.delete(db_usuario)
         db.commit()
     return db_usuario
+
+def authenticate_usuario(db: Session, username: str, password: str):
+    usuario = db.query(Usuario).filter(Usuario.usuario == username).first()
+    if not usuario:
+        return None
+    if not verify_password(password, usuario.contrasena):
+        return None
+    return usuario
