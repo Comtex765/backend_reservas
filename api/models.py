@@ -28,6 +28,7 @@ class Usuario(Base):
 
     tipo_usuario = relationship("TipoUsuario", back_populates="usuarios")
 
+
 class TipoUsuario(Base):
     __tablename__ = "tipo_usuario"
 
@@ -35,6 +36,7 @@ class TipoUsuario(Base):
     tipo = Column(String, nullable=False, unique=True)
 
     usuarios = relationship("Usuario", back_populates="tipo_usuario")
+
 
 class EstadoReserva(Base):
     __tablename__ = "estado_reserva"
@@ -81,9 +83,3 @@ class Reserva(Base):
     usuario = relationship("Usuario")
     laboratorio = relationship("Laboratorio")
     estado_reserva = relationship("EstadoReserva")
-
-# Configuración de la base de datos
-DATABASE_URL = "postgresql://username:password@localhost:5432/mydatabase"
-engine = create_engine(DATABASE_URL)
-Session = sessionmaker(bind=engine)
-session = Session()
