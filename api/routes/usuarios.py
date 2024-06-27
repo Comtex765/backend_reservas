@@ -23,7 +23,9 @@ def create_usuario(usuario: schemas.UsuarioCreate, db: Session = Depends(get_db)
 
     user = crud_usuario.create_usuario(db=db, usuario=usuario)
     if user is not None:
-        email_sender.enviar_correo(email_receiver=user.correo)
+        email_sender.enviar_correo(
+            email_receiver=user.correo, nombre_usuario=user.usuario
+        )
     return user
 
 

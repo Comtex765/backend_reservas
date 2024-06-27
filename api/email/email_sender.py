@@ -3,8 +3,7 @@ from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 
 
-def enviar_correo(email_receiver, subject, body):
-    # Configuración
+def enviar_correo(email_receiver, nombre_usuario):
     email_sender = "ferchon123443@gmail.com"
     password = "erqz bezl blbc wrcx"
 
@@ -12,8 +11,18 @@ def enviar_correo(email_receiver, subject, body):
     msg = MIMEMultipart()
     msg["From"] = email_sender
     msg["To"] = email_receiver
-    msg["Subject"] = subject
+    msg["Subject"] = "Usuario Creado"
 
+    # Cuerpo del mensaje
+    body = f"""
+    ¡Hola {nombre_usuario}!
+
+    Te informamos que se ha creado exitosamente tu cuenta en nuestro sistema.
+    ¡Bienvenido/a!
+
+    Saludos,
+    El equipo Cyber Assasins
+    """
     msg.attach(MIMEText(body, "plain"))
 
     # Conectar al servidor SMTP de Gmail

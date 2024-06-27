@@ -24,7 +24,7 @@ class Usuario(UsuarioBase):
     contrasena: str
 
     class Config:
-        orm_mode = True
+        from_attributes = True
 
 
 class Token(BaseModel):
@@ -49,7 +49,7 @@ class Laboratorio(LaboratorioBase):
     id_laboratorio: int
 
     class Config:
-        orm_mode = True
+        from_attributes = True
 
 
 class LoginRequest(BaseModel):
