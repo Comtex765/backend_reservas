@@ -18,7 +18,7 @@ app.add_middleware(
 
 @app.get("/")
 def route():
-    return {"success": "True"}
+    return {"Bienvenido": "Gestión de Laboratorios"}
 
 
 app.include_router(usuarios.router, prefix="/usuarios", tags=["usuarios"])
