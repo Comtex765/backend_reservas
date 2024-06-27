@@ -7,7 +7,7 @@ def get_laboratorios(db: Session):
     return db.query(Laboratorio).all()
 
 def get_laboratorio_by_name(db: Session, lab: str):
-    return db.query(Laboratorio).filter( == username).first()
+    return db.query(Laboratorio).filter(Laboratorio.nombre_lab == lab).first()
 
 
 def create_laboratorio(db: Session, laboratorio: schemas.LaboratorioCreate):
