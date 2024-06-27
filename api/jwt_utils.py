@@ -2,7 +2,6 @@ import jwt
 from datetime import datetime, timedelta
 from typing import Optional
 from fastapi import HTTPException, status
-from passlib.context import CryptContext
 import bcrypt
 
 # Configuración básica
@@ -10,13 +9,11 @@ SECRET_KEY = "your_secret_key"  # Cambia esto por una clave secreta segura en tu
 ALGORITHM = "HS256"
 ACCESS_TOKEN_EXPIRE_MINUTES = 30  # Tiempo de expiración del token en minutos
 
-pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
+def get_password_hash(password: str):
+    return bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
 
 def verify_password(plain_password: str, hashed_password: str):
     return bcrypt.checkpw(plain_password.encode('utf-8'), hashed_password.encode('utf-8'))
-
-def get_password_hash(password: str):
-    return bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
 
 def create_access_token(data: dict, expires_delta: Optional[timedelta] = None):
     to_encode = data.copy()
@@ -37,4 +34,3 @@ def verify_token(token: str):
             status_code=status.HTTP_403_FORBIDDEN,
             detail="Could not validate credentials",
         )
-

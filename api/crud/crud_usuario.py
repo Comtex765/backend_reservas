@@ -13,13 +13,13 @@ def get_usuarios(db: Session):
     return db.query(Usuario).all()
 
 def create_usuario(db: Session, usuario: UsuarioCreate):
-    hashed_password = get_password_hash(usuario.contraseña)
+    hashed_password = get_password_hash(usuario.contrasena)
     db_usuario = Usuario(
         nombre=usuario.nombre,
         apellido=usuario.apellido,
         correo=usuario.correo,
         usuario=usuario.usuario,
-        contraseña=hashed_password,
+        contrasena=hashed_password,
         celular=usuario.celular,
         id_tipo=usuario.id_tipo
     )
@@ -28,10 +28,10 @@ def create_usuario(db: Session, usuario: UsuarioCreate):
     db.refresh(db_usuario)
     return db_usuario
 
-def update_usuario(db: Session, usuario_id: int, usuario: UsuarioUpdate):
-    db_usuario = db.query(Usuario).filter(Usuario.id_usuario == usuario_id).first()
+def update_usuario(db: Session, username: str, usuario_update: UsuarioUpdate):
+    db_usuario = db.query(Usuario).filter(Usuario.usuario == username).first()
     if db_usuario:
-        for key, value in usuario.dict(exclude_unset=True).items():
+        for key, value in usuario_update.dict(exclude_unset=True).items():
             setattr(db_usuario, key, value)
         db.commit()
         db.refresh(db_usuario)
