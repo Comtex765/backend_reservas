@@ -1,6 +1,6 @@
-from .models import Usuario
+from api.models import Usuario
 from sqlalchemy.orm import Session
-from .schemas import UsuarioCreate, UsuarioUpdate
+from api.schemas import UsuarioCreate, UsuarioUpdate
 
 def get_usuario(db: Session, usuario_id: int):
     return db.query(Usuario).filter(Usuario.id_usuario == usuario_id).first()
@@ -8,8 +8,8 @@ def get_usuario(db: Session, usuario_id: int):
 def get_usuario_by_username(db: Session, username: str):
     return db.query(Usuario).filter(Usuario.usuario == username).first()
 
-def get_usuarios(db: Session, skip: int = 0, limit: int = 100):
-    return db.query(Usuario).offset(skip).limit(limit).all()
+def get_usuarios(db: Session):
+    return db.query(Usuario).all()
 
 def create_usuario(db: Session, usuario: UsuarioCreate):
     db_usuario = Usuario(
