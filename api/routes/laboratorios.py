@@ -12,6 +12,7 @@ router = APIRouter()
 def read_laboratorios(db: Session = Depends(get_db)):
     return crud_laboratorio.get_laboratorios(db=db)
 
+
 @router.get("/{lab}", response_model=schemas.Laboratorio)
 def read_usuario(lab: str, db: Session = Depends(get_db)):
     usuario = crud_laboratorio.get_laboratorio_by_name(db, lab)

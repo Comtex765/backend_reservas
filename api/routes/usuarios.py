@@ -3,6 +3,7 @@ from sqlalchemy.orm import Session
 import api.models as models
 import api.schemas as schemas
 from api.crud import crud_usuario
+from api.email import email_sender
 
 from api.database import get_db
 
@@ -19,7 +20,11 @@ def create_usuario(usuario: schemas.UsuarioCreate, db: Session = Depends(get_db)
     )
     if not db_tipo_usuario:
         raise HTTPException(status_code=404, detail="Tipo de usuario no encontrado")
-    return crud_usuario.create_usuario(db=db, usuario=usuario)
+
+    user = crud_usuario.create_usuario(db=db, usuario=usuario)
+    if user is not None:
+        email_sender.enviar_correo(email_receiver=user.correo)
+    return user
 
 
 @router.get("/{username}", response_model=schemas.Usuario)
