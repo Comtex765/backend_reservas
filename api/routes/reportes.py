@@ -1,10 +1,7 @@
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
-from typing import List
-
-from .. import crud_historial
+from api.crud import crud_historial
 from ..database import get_db
-from ..schemas import Historial
 
 router = APIRouter()
 
