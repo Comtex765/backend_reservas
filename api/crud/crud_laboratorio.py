@@ -1,9 +1,13 @@
 from sqlalchemy.orm import Session
+from api.models import Laboratorio
 from api import models, schemas
 
 
 def get_laboratorios(db: Session):
-    return db.query(models.Laboratorio).all()
+    return db.query(Laboratorio).all()
+
+def get_laboratorio_by_name(db: Session, lab: str):
+    return db.query(Laboratorio).filter( == username).first()
 
 
 def create_laboratorio(db: Session, laboratorio: schemas.LaboratorioCreate):
@@ -22,8 +26,8 @@ def update_laboratorio(
     db: Session, laboratorio_id: int, laboratorio: schemas.LaboratorioUpdate
 ):
     db_laboratorio = (
-        db.query(models.Laboratorio)
-        .filter(models.Laboratorio.id_laboratorio == laboratorio_id)
+        db.query(Laboratorio)
+        .filter(Laboratorio.id_laboratorio == laboratorio_id)
         .first()
     )
     if db_laboratorio:
@@ -36,8 +40,8 @@ def update_laboratorio(
 
 def delete_laboratorio(db: Session, laboratorio_id: int):
     db_laboratorio = (
-        db.query(models.Laboratorio)
-        .filter(models.Laboratorio.id_laboratorio == laboratorio_id)
+        db.query(Laboratorio)
+        .filter(Laboratorio.id_laboratorio == laboratorio_id)
         .first()
     )
     if db_laboratorio:
