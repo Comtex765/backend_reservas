@@ -51,6 +51,7 @@ class Laboratorio(LaboratorioBase):
     class Config:
         orm_mode = True
 
+
 class LoginRequest(BaseModel):
     usuario: str
     contrasena: str
