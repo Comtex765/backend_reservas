@@ -1,5 +1,5 @@
 from sqlalchemy.orm import Session
-from api.models import Historial
+from api.models import Historial, Usuario, Laboratorio, Reserva
 from api import schemas
 from datetime import datetime, date
 from sqlalchemy import func
@@ -53,29 +53,34 @@ def get_historial_por_usuario_laboratorio(
     db: Session, usuario_id: int, laboratorio_id: int
 ):
     return (
-        db.query(Historial)
+        db.query(Historial, Usuario, Laboratorio)
+        .join(Usuario, Historial.id_usuario == Usuario.id_usuario)
+        .join(Laboratorio, Historial.id_laboratorio == Laboratorio.id_laboratorio)
         .filter(
-            Historial.id_usuario == usuario_id,
-            Historial.id_laboratorio == laboratorio_id,
+            (
+                Historial.id_usuario == usuario_id
+                and Historial.id_laboratorio == laboratorio_id
+            )
         )
         .all()
     )
 
 
-def reporte_uso_laboratorios(db: Session):
-    today = date.today()
-    start_of_year = datetime(today.year, 1, 1)
-    end_of_year = datetime(today.year, 12, 31)
-
+def get_historial_por_usuario(db: Session, usuario_id: int):
     return (
-        db.query(
-            Historial.id_laboratorio,
-            func.count(Historial.id_historial).label("total_reservas"),
-            func.sum(
-                func.date_trunc("second", Historial.hora_fin - Historial.hora_inicio)
-            ).label("total_tiempo_reserva"),
-        )
-        .filter(Historial.fecha >= start_of_year, Historial.fecha <= end_of_year)
-        .group_by(Historial.id_laboratorio)
+        db.query(Historial, Usuario, Laboratorio)
+        .join(Usuario, Historial.id_usuario == Usuario.id_usuario)
+        .join(Laboratorio, Historial.id_laboratorio == Laboratorio.id_laboratorio)
+        .filter((Historial.id_usuario == usuario_id))
+        .all()
+    )
+
+
+def get_historial_por_laboratorio(db: Session, laboratorio_id: int):
+    return (
+        db.query(Historial, Usuario, Laboratorio)
+        .join(Usuario, Historial.id_usuario == Usuario.id_usuario)
+        .join(Laboratorio, Historial.id_laboratorio == Laboratorio.id_laboratorio)
+        .filter((Historial.id_laboratorio == laboratorio_id))
         .all()
     )
