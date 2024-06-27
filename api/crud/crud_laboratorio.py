@@ -1,6 +1,6 @@
 from sqlalchemy.orm import Session
 from api.models import Laboratorio
-from api import models, schemas
+from api import  schemas
 
 
 def get_laboratorios(db: Session):
@@ -12,7 +12,7 @@ def get_laboratorio_by_name(db: Session, lab: str):
 
 
 def create_laboratorio(db: Session, laboratorio: schemas.LaboratorioCreate):
-    db_laboratorio = models.Laboratorio(
+    db_laboratorio = Laboratorio(
         nombre_lab=laboratorio.nombre_lab,
         capacidad=laboratorio.capacidad,
         equipos=laboratorio.equipos,

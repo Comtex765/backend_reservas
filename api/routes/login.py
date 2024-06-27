@@ -15,7 +15,9 @@ oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
 
 
 @router.post("/", response_model=schemas.Token)
-def login_for_access_token(login: schemas.LoginRequest, db: Session = Depends(get_db),
+def login_for_access_token(
+    login: schemas.LoginRequest,
+    db: Session = Depends(get_db),
 ):
     user = crud_usuario.authenticate_usuario(db, login.usuario, login.contrasena)
     if not user:
