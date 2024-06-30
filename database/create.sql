@@ -93,3 +93,9 @@ alter table USUARIOS
       references TIPO_USUARIO (ID_TIPO)
       on delete restrict on update restrict;
 
+INSERT INTO tipo_usuario(
+	id_tipo, tipo)
+	VALUES 
+	(1, 'ESTUDIANTE'),
+	(2,'PROFESOR'),
+	(3, 'ADMINISTRATIVO')
