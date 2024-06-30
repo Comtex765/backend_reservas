@@ -9,7 +9,7 @@ from api.database import get_db
 router = APIRouter()
 
 
-@router.post("/", response_model=schemas.Historial)
+@router.post("", response_model=schemas.Historial)
 def create_historial(historial: schemas.HistorialCreate, db: Session = Depends(get_db)):
     return crud_historial.create_historial(db=db, historial=historial)
 

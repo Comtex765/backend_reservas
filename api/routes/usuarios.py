@@ -10,7 +10,7 @@ from api.database import get_db
 router = APIRouter()
 
 
-@router.post("/", response_model=schemas.Usuario)
+@router.post("", response_model=schemas.Usuario)
 def create_usuario(usuario: schemas.UsuarioCreate, db: Session = Depends(get_db)):
     tipo_usuario = usuario.id_tipo
     db_tipo_usuario = (
@@ -39,7 +39,7 @@ def read_usuario(username: str, db: Session = Depends(get_db)):
     return usuario
 
 
-@router.get("/", response_model=list[schemas.Usuario])
+@router.get("", response_model=list[schemas.Usuario])
 def read_usuarios(db: Session = Depends(get_db)):
     usuarios = crud_usuario.get_usuarios(db)
     return usuarios

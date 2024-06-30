@@ -10,7 +10,7 @@ from api.email import sender_confirmation
 router = APIRouter()
 
 
-@router.post("/", response_model=schemas.Reserva)
+@router.post("", response_model=schemas.Reserva)
 async def create_reserva(reserva: schemas.ReservaCreate, db: Session = Depends(get_db)):
     reserva = crud_reserva.create_reserva(db=db, reserva=reserva)
     user = crud_usuario.get_usuario(db=db, usuario_id=reserva.id_usuario)

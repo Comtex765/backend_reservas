@@ -14,7 +14,7 @@ router = APIRouter()
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
 
 
-@router.post("/", response_model=schemas.Token)
+@router.post("", response_model=schemas.Token)
 def login_for_access_token(
     login: schemas.LoginRequest,
     db: Session = Depends(get_db),

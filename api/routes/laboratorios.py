@@ -8,7 +8,7 @@ from api.database import get_db
 router = APIRouter()
 
 
-@router.get("/", response_model=list[schemas.Laboratorio])
+@router.get("", response_model=list[schemas.Laboratorio])
 def read_laboratorios(db: Session = Depends(get_db)):
     return crud_laboratorio.get_laboratorios(db=db)
 
@@ -23,7 +23,7 @@ def read_usuario(lab: str, db: Session = Depends(get_db)):
     return usuario
 
 
-@router.post("/", response_model=schemas.Laboratorio)
+@router.post("", response_model=schemas.Laboratorio)
 def create_laboratorio(
     laboratorio: schemas.LaboratorioCreate, db: Session = Depends(get_db)
 ):
