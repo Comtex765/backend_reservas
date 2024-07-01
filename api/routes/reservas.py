@@ -24,8 +24,6 @@ async def create_reserva(reserva: schemas.ReservaCreate, db: Session = Depends(g
         )
     return reserva
 
-    return user
-
 
 @router.get("/{reserva_id}", response_model=schemas.Reserva)
 async def read_reserva(reserva_id: int, db: Session = Depends(get_db)):
@@ -40,7 +38,7 @@ async def read_reservas(db: Session = Depends(get_db)):
     return crud_reserva.get_reservas(db=db)
 
 
-@router.get("/{id_usuario}", response_model=list[schemas.Reserva])
+@router.get("/user/{id_usuario}", response_model=list[schemas.Reserva])
 async def read_reservas(id_usuario: int, db: Session = Depends(get_db)):
     return crud_reserva.get_reserva_user(db=db, id_usuario=id_usuario)
 
@@ -55,8 +53,11 @@ def update_reserva(
         db=db, reserva_id=reserva_id, reserva_update=reserva_update
     )
     if db_reserva is None:
-        raise HTTPException(status_code=404, detail=f"Reserva '{
-                            reserva_id}' not found")
+        raise HTTPException(
+            status_code=404,
+            detail=f"Reserva '{
+                            reserva_id}' not found",
+        )
     return db_reserva
 
 
@@ -64,6 +65,9 @@ def update_reserva(
 def delete_reserva(reserva_id: int, db: Session = Depends(get_db)):
     db_reserva = crud_reserva.delete_reserva(db=db, reserva_id=reserva_id)
     if db_reserva is None:
-        raise HTTPException(status_code=404, detail=f"Reserva '{
-                            reserva_id}' not found")
+        raise HTTPException(
+            status_code=404,
+            detail=f"Reserva '{
+                            reserva_id}' not found",
+        )
     return db_reserva
