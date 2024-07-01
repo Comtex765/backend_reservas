@@ -99,3 +99,9 @@ INSERT INTO tipo_usuario(
 	(1, 'ESTUDIANTE'),
 	(2,'PROFESOR'),
 	(3, 'ADMINISTRATIVO')
+
+   INSERT INTO estado_reserva(
+	id_estado, estado)
+	VALUES 
+	(1, 'ACTIVA'),
+	(2, 'CANCELADA')

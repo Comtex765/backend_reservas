@@ -11,6 +11,10 @@ def get_laboratorio_by_name(db: Session, lab: str):
     return db.query(Laboratorio).filter(Laboratorio.nombre_lab == lab).first()
 
 
+def get_laboratorio_by_id(db: Session, lab: int):
+    return db.query(Laboratorio).filter(Laboratorio.id_laboratorio == lab).first()
+
+
 def create_laboratorio(db: Session, laboratorio: schemas.LaboratorioCreate):
     db_laboratorio = Laboratorio(
         nombre_lab=laboratorio.nombre_lab,

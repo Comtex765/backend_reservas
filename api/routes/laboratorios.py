@@ -13,14 +13,24 @@ def read_laboratorios(db: Session = Depends(get_db)):
     return crud_laboratorio.get_laboratorios(db=db)
 
 
-@router.get("/{lab}", response_model=schemas.Laboratorio)
-def read_usuario(lab: str, db: Session = Depends(get_db)):
-    usuario = crud_laboratorio.get_laboratorio_by_name(db, lab)
-    if usuario is None:
+# @router.get("/{lab}", response_model=schemas.Laboratorio)
+# def read_lab_name(lab: str, db: Session = Depends(get_db)):
+#     usuario = crud_laboratorio.get_laboratorio_by_name(db, lab)
+#     if usuario is None:
+#         raise HTTPException(
+#             status_code=status.HTTP_404_NOT_FOUND, detail="Lab not found"
+#         )
+#     return usuario
+
+
+@router.get("/{lab_id}", response_model=schemas.Laboratorio)
+def read_lab_id(lab_id: int, db: Session = Depends(get_db)):
+    lab = crud_laboratorio.get_laboratorio_by_id(db, lab_id)
+    if lab is None:
         raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND, detail="User not found"
+            status_code=status.HTTP_404_NOT_FOUND, detail="Lab not found"
         )
-    return usuario
+    return lab
 
 
 @router.post("", response_model=schemas.Laboratorio)
