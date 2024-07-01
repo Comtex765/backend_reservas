@@ -17,14 +17,15 @@ def create_reserva(db: Session, reserva: schemas.ReservaCreate):
     db.refresh(db_reserva)
     return db_reserva
 
+def get_reservas(db: Session):
+    return db.query(Reserva).all()
 
 def get_reserva(db: Session, reserva_id: int):
     return db.query(Reserva).filter(Reserva.id_reserva == reserva_id).first()
 
 
-def get_reservas(db: Session):
-    return db.query(Reserva).all()
-
+def get_reserva_user(db: Session, id_usuario: int):
+    return db.query(Reserva).filter(Reserva.id_usuario == id_usuario).first()
 
 def update_reserva(db: Session, reserva_id: int, reserva_update: schemas.ReservaUpdate):
     db_reserva = db.query(Reserva).filter(Reserva.id_reserva == reserva_id).first()
