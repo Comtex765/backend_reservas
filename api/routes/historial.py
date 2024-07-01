@@ -22,7 +22,7 @@ def read_historial(historial_id: int, db: Session = Depends(get_db)):
     return db_historial
 
 
-@router.get("/", response_model=list[schemas.Historial])
+@router.get("", response_model=list[schemas.Historial])
 def read_historiales(db: Session = Depends(get_db)):
     return crud_historial.get_historiales(db=db)
 

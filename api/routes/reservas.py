@@ -35,7 +35,7 @@ async def read_reserva(reserva_id: int, db: Session = Depends(get_db)):
     return db_reserva
 
 
-@router.get("/", response_model=list[schemas.Reserva])
+@router.get("", response_model=list[schemas.Reserva])
 async def read_reservas(db: Session = Depends(get_db)):
     return crud_reserva.get_reservas(db=db)
 
