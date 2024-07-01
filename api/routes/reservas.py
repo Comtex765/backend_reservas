@@ -12,6 +12,7 @@ router = APIRouter()
 
 @router.post("", response_model=schemas.Reserva)
 async def create_reserva(reserva: schemas.ReservaCreate, db: Session = Depends(get_db)):
+    print(reserva)
     reserva = crud_reserva.create_reserva(db=db, reserva=reserva)
     user = crud_usuario.get_usuario(db=db, usuario_id=reserva.id_usuario)
     if reserva is not None:
@@ -38,7 +39,7 @@ async def read_reservas(db: Session = Depends(get_db)):
     return crud_reserva.get_reservas(db=db)
 
 
-@router.get("/user/{id_usuario}", response_model=list[schemas.Reserva])
+@router.get("/user/{id_usuario}", response_model=list[schemas.ReservaLabJoin])
 async def read_reservas(id_usuario: int, db: Session = Depends(get_db)):
     return crud_reserva.get_reserva_user(db=db, id_usuario=id_usuario)
 

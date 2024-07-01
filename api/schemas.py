@@ -66,6 +66,10 @@ class ReservaBase(BaseModel):
     fecha: date
     hora_inicio: time
     hora_fin: time
+
+
+class ReservaLabJoin(ReservaBase):
+    id_reserva: int
     laboratorio: Laboratorio
 
 
